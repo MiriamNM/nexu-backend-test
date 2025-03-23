@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: nexu_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  flyway:
+    image: flyway/flyway
+    container_name: flyway_migration
+    depends_on:
+      - db
+    command: >
+      -url=jdbc:postgresql://db:5432/nexu_db
+      -user=${POSTGRES_USER}
+      -password=${POSTGRES_PASSWORD}
+      migrate
+    volumes:
+      - ./migrations:/flyway/sql
+    networks:
+      - nexu-network
+
+  app:
+    build: .
+    container_name: nexu_app
+    working_dir: /app
+    restart: always
+    depends_on:
+      - db
+      - flyway
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    networks:
+      - nexu-network
+
+volumes:
+  db:
+
+networks:
+  nexu-network:
+    driver: bridge
