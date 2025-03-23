@@ -184,6 +184,12 @@ To use these commands, you can run make <command>. For example:
   make run
 ```
 
+
+This repository contains the code and work completed within a 2-hour time frame as per the provided requirements. The goal was to implement a backend service with PostgreSQL integration and CRUD operations. However, due to time constraints, not all tasks could be completed as originally planned.
+
+## Work Done in 2 Hours
+During the allotted time, I focused on setting up the basic structure for the project, including the environment, dependencies, and database setup. While the implementation of the CRUD operations was partially completed, some of the tasks required more time to finish due to unforeseen issues that arose during development.
+
 ## Issues Encountered
 - Database Connection: Initially, I encountered issues connecting to the PostgreSQL container in Docker due to incorrect hostnames and database configurations. I had to debug and adjust the environment variables to ensure proper connection.
 
